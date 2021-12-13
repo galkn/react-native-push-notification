@@ -498,8 +498,10 @@ public class RNPushNotificationHelper {
             notification.setChannelId(channel_id);
             notification.setContentIntent(pendingIntent);
 
-            if (bundle.getBoolean("fullScreenIntent"))
+            if (bundle.getBoolean("fullScreenIntent")) {
                 notification.setFullScreenIntent(pendingIntent, true);
+                notification.setCategory(NotificationCompat.CATEGORY_ALARM);
+            }
 
             JSONArray actionsArray = null;
             try {
