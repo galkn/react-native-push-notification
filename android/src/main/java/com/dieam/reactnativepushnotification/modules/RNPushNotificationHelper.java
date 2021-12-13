@@ -500,7 +500,9 @@ public class RNPushNotificationHelper {
 
             if (bundle.getBoolean("fullScreenIntent")) {
                 notification.setFullScreenIntent(pendingIntent, true);
-                notification.setCategory(NotificationCompat.CATEGORY_ALARM);
+            }
+            if (bundle.getString("categoryAndroid") != null) {
+                notification.setCategory(bundle.getString("categoryAndroid"));
             }
 
             JSONArray actionsArray = null;
