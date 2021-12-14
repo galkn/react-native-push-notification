@@ -499,6 +499,7 @@ public class RNPushNotificationHelper {
             notification.setContentIntent(pendingIntent);
 
             if (bundle.getBoolean("fullScreenIntent")) {
+                PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, new Intent(), 0);
                 notification.setFullScreenIntent(pendingIntent, true);
             }
             if (bundle.getString("categoryAndroid") != null) {
