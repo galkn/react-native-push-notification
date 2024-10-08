@@ -100,13 +100,13 @@ Notifications.configure = function(options) {
         if(this.isPopInitialNotification) {
           return;
         }
-        
+
         this.isPopInitialNotification = true;
-        
+
         if (!firstNotification || false === firstNotification.userInteraction) {
           return;
         }
-        
+
         this._onNotification(firstNotification, true);
       }.bind(this));
     }
@@ -156,32 +156,7 @@ Notifications.localNotification = function({...details}) {
   }
 
   if (Platform.OS === 'ios') {
-    // https://developer.apple.com/reference/uikit/uilocalnotification
-
-    let soundName = details.soundName ? details.soundName : 'default'; // play sound (and vibrate) as default behaviour
-
-    if (details.hasOwnProperty('playSound') && !details.playSound) {
-      soundName = ''; // empty string results in no sound (and no vibration)
-    }
-
-    if(details.picture) {
-      details.userInfo = details.userInfo || {};
-      details.userInfo.image = details.picture;
-    }
-
-    // for valid fields see: https://github.com/react-native-push-notification-ios/push-notification-ios#addnotificationrequest
-
-    this.handler.addNotificationRequest({
-      id: (!details.id ? Math.floor(Math.random() * Math.pow(2, 32)).toString() : details.id),
-      title: details.title,
-      subtitle: details.subtitle,
-      body: details.message,
-      badge: details.number,
-      sound: soundName,
-      isSilent: details.playSound === false,
-      category: details.category,
-      userInfo: details.userInfo
-    });
+    // use Notifee
   } else {
     if (details && typeof details.number === 'number') {
       if(isNaN(details.number)) {
@@ -210,7 +185,7 @@ Notifications.localNotification = function({...details}) {
     if(details.userInfo) {
       details.userInfo = JSON.stringify(details.userInfo);
     }
-  
+
     if(details.picture && !details.bigPictureUrl) {
       details.bigPictureUrl = details.picture;
     }
@@ -228,7 +203,7 @@ Notifications.localNotificationSchedule = function({...details}) {
   if ('android' === Platform.os && details && !details.channelId) {
     console.warn('No channel id passed, notifications may not work.');
   }
-  
+
   if (details && typeof details.id === 'number') {
     if(isNaN(details.id)) {
       console.warn('NaN value has been passed as id');
@@ -250,7 +225,7 @@ Notifications.localNotificationSchedule = function({...details}) {
       details.userInfo = details.userInfo || {};
       details.userInfo.image = details.picture;
     }
-    
+
     const repeatsComponent = {
       second: ['minute', 'hour', 'day', 'week', 'month'].includes(details.repeatType),
       minute: ['hour', 'day', 'week', 'month'].includes(details.repeatType),
@@ -298,7 +273,7 @@ Notifications.localNotificationSchedule = function({...details}) {
         details.shortcutId = '' + details.shortcutId;
       }
     }
-  
+
     if(details && Array.isArray(details.actions)) {
       details.actions = JSON.stringify(details.actions);
     }
@@ -404,7 +379,7 @@ Notifications._transformNotificationObject = function(data, isFromBackground = n
         /* void */
       }
     }
-    
+
     if ( typeof _notification.userInfo === 'string' ) {
       try {
         _notification.userInfo = JSON.parse(_notification.userInfo);
