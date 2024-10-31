@@ -898,6 +898,23 @@ public class RNPushNotificationHelper {
         if (manager == null)
             return false;
 
+        try {
+            if (soundUri != null) {
+                AudioManager mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+                mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC,
+                        (int)(mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC) * 0.7),
+                        AudioManager.FLAG_PLAY_SOUND);
+
+                MediaPlayer mediaPlayer = new MediaPlayer();
+                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                mediaPlayer.setDataSource(context, soundUri);
+                mediaPlayer.prepare();
+                mediaPlayer.start();
+            }
+        } catch (Exception e) {
+            Log.d("LOG", e.toString());
+        }
+
         NotificationChannel channel = manager.getNotificationChannel(channel_id);
 
         if (
